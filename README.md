@@ -1,12 +1,22 @@
-# Datalake
-
-This repository shows how to implement datalake ingestion using Spark Structured Streaming and Kafka. Data are streamed to the parquet database. If messages doesn't match schema, they're saved to dead letter queue.
+# Datalake - ingestion
 
 ## Table of contents
 
+* [Overview](#overview)
+* [Things to improve](#things-to-improve)
 * [How to run](#how-to-run)
 * [Development](#development)
 * [References](#references)
+
+## Overview
+
+This repository shows how to implement datalake ingestion using Spark Structured Streaming and Kafka. Data are streamed to the parquet database. If messages don't match schema, they're saved to dead letter queue. Schema is saved by the confluent_producer to schema registry.
+
+## Things to improve
+
+* For now, there's only schema matching on the ingestion side. There is some additional work needed to do to validate schema,
+* Needed partitioning tuning for parquet database,
+* Idempotency to improve guarentee of message delivery.
 
 ## How to run
 
