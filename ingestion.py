@@ -3,7 +3,7 @@ from pyspark.sql.avro.functions import from_avro
 from pyspark.sql.session import SparkSession
 from pyspark.sql.functions import explode_outer, col
 
-INGESTION_DATA_PATH = os.getenv("INGESTION_DATA_DIR", "/tmp")
+INGESTION_DATA_PATH = os.getenv("INGESTION_DATA_PATH", "/tmp")
 IVY_CACHE_PATH = os.path.join(INGESTION_DATA_PATH, "ivy")
 PARQUET_DB_PATH = os.path.join(INGESTION_DATA_PATH, "parquet")
 PARQUET_DLQ_DB_PATH = os.path.join(INGESTION_DATA_PATH, "parquet-dlq")

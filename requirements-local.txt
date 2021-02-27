@@ -1,0 +1,5 @@
+confluent-kafka
+pandas
+pyarrow
+kafka-python
+avro
