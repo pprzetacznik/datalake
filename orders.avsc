@@ -1,0 +1,45 @@
+{
+    "items": {
+        "fields": [
+            {
+                "name": "order_id",
+                "type": "long"
+            },
+            {
+                "name": "customer",
+                "type": "string"
+            },
+            {
+                "name": "description",
+                "type": "string"
+            },
+            {
+                "name": "price",
+                "type": "double"
+            },
+            {
+                "name": "products",
+                "type": {
+                    "items": {
+                        "fields": [
+                            {
+                                "name": "name",
+                                "type": "string"
+                            },
+                            {
+                                "name": "price",
+                                "type": "double"
+                            }
+                        ],
+                        "name": "Product",
+                        "type": "record"
+                    },
+                    "type": "array"
+                }
+            }
+        ],
+        "name": "Order",
+        "type": "record"
+    },
+    "type": "array"
+}
