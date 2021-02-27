@@ -1,6 +1,6 @@
 # Datalake
 
-This repository shows how to implement datalake ingestion using Spark Structured Streaming and Kafka.
+This repository shows how to implement datalake ingestion using Spark Structured Streaming and Kafka. Data are streamed to the parquet database. If messages doesn't match schema, they're saved to dead letter queue.
 
 ## Table of contents
 
@@ -45,7 +45,7 @@ Insert new data (stop to exit)
 >
 ```
 
-Message will be delivered on the datalake side.
+You'll be able to see messages in the docker-compose logs.
 ```Bash
 +---+---------+------+-----+---------+----------+--------+--------+-----------+-----+--------+
 ingestion          | |key|partition|offset|topic|timestamp|avro_value|order_id|customer|description|price|products|
@@ -61,6 +61,7 @@ ingestion          | +--------+---------+------+----------+--------------------+
 
 ### View parquet raw database
 
+The easiest way for reading parquet database is simply by using pandas and pyarrow.
 ```Python
 $ python
 >>> import pandas as pd
