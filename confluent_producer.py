@@ -39,10 +39,6 @@ producer_conf = {
     "bootstrap.servers": KAFKA_URL,
     "key.serializer": StringSerializer("utf_8"),
     "value.serializer": avro_serializer,
-    # "security.protocol": "ssl",
-    # "ssl.ca.location": cafile,
-    # "ssl.key.location": keyfile,
-    # "ssl.certificate.location": certfile,
 }
 
 producer = SerializingProducer(producer_conf)
