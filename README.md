@@ -14,7 +14,7 @@ This repository shows how to implement datalake ingestion using Spark Structured
 
 ## Things to improve
 
-* For now, there's only schema matching on the ingestion side. There is some additional work needed to do to validate schema,
+* For now, the schema matching using schema registry is only on the ingestion side. There is some additional work needed to do to validate schema against schema registry on the consumer side,
 * Needed partitioning tuning for parquet database,
 * Idempotency to improve guarentee of message delivery.
 
