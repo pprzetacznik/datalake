@@ -37,10 +37,6 @@ producer = KafkaProducer(
     bootstrap_servers=KAFKA_URL,
     value_serializer=serialize_message,
     ssl_check_hostname=True,
-    # ssl_cafile="./cacert.pem",
-    # ssl_certfile="./certfile.pem",
-    # ssl_keyfile="./keyfile.pem",
-    # security_protocol="SSL",
 )
 
 
