@@ -23,17 +23,9 @@ KAFKA_TOPIC_NAME = os.environ["KAFKA_TOPIC"]
 AVRO_SCHEMA_FILE = os.getenv("AVRO_SCHEMA_FILE")
 value_schema_str = read_file(AVRO_SCHEMA_FILE)
 
-# cafile = "./cacert.pem"
-# certfile = "./certfile.pem"
-# keyfile = "./keyfile.pem"
-
-
 schema_registry_client = SchemaRegistryClient(
     conf={
         "url": f"http://{SCHEMA_REGISTRY_URL}",
-        # "ssl.ca.location": cafile,
-        # "ssl.key.location": keyfile,
-        # "ssl.certificate.location": certfile,
     }
 )
 
