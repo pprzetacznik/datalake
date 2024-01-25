@@ -122,6 +122,7 @@ $ curl http://localhost:8081/subjects/dev.orders-value/versions/latest
 
 ## References
 
-* [Structured Streaming Programming Guide](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html)
-* [ABRiS - Avro Bridge for Spark](https://github.com/AbsaOSS/ABRiS)
+* [Structured Streaming Programming Guide](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html),
+* [ABRiS - Avro Bridge for Spark](https://github.com/AbsaOSS/ABRiS),
+* [Schema Evolution and Compatibility](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html).
 
