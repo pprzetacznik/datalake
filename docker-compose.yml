@@ -65,6 +65,7 @@ services:
       INGESTION_DATA_PATH: "/ingestion_data"
       AVRO_SCHEMA_FILE: "/ingestion/orders.avsc"
       KAFKA_BOOTSTRAP_SERVERS: "broker:29092"
+    tty: true
     volumes:
       - .:/ingestion
       - ./ingestion_data:/ingestion_data

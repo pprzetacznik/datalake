@@ -11,6 +11,8 @@ CHECKPOINTS_PATH = os.path.join(INGESTION_DATA_PATH, "checkpoints")
 KAFKA_URL = os.environ["KAFKA_URL"]
 KAFKA_TOPIC_NAME = os.environ["KAFKA_TOPIC"]
 AVRO_SCHEMA_FILE = os.getenv("AVRO_SCHEMA_FILE")
+# WRITE_MODE = "overwrite"
+WRITE_MODE = "append"
 
 packages = [
     "org.apache.spark:spark-sql-kafka-0-10_2.12:3.0.2",
@@ -82,8 +84,8 @@ def process_df(df, id):
 
     raw_zone_df = df.filter("order_id is not null")
     raw_zone_df.write.format("console").save()
-    raw_zone_df.write.format("parquet").mode("overwrite").save(PARQUET_DB_PATH)
-    dead_letter_queue_df.write.format("parquet").mode("overwrite").save(
+    raw_zone_df.write.format("parquet").mode(WRITE_MODE).save(PARQUET_DB_PATH)
+    dead_letter_queue_df.write.format("parquet").mode(WRITE_MODE).save(
         PARQUET_DLQ_DB_PATH
     )
 

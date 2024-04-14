@@ -1,5 +1,7 @@
 confluent-kafka
 pandas
 pyarrow
-kafka-python
+# kafka-python
+git+https://github.com/dpkp/kafka-python.git
 avro
+fastavro

@@ -63,4 +63,4 @@ while description != "stop":
     print(f"Sending data: {data}")
     index += 1
     print("Insert new data (stop to exit)")
-    input_user = input()
+    description = input()
