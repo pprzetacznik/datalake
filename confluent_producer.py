@@ -1,31 +1,23 @@
-import os
-import sys
-import logging
+from os import path
+
 from confluent_kafka import SerializingProducer
 from confluent_kafka.serialization import StringSerializer
 from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.avro import AvroSerializer
 
-if os.getenv("VERBOSE", False) in ("True", True):
-    logger = logging.getLogger("kafka")
-    logger.addHandler(logging.StreamHandler(sys.stdout))
-    logger.setLevel(logging.DEBUG)
+from config import Config
+from utils import setup_logger, read_file
+
+setup_logger()
 
 
-def read_file(filename):
-    with open(filename) as f:
-        return f.read()
-
-
-KAFKA_URL = os.environ["KAFKA_URL"]
-SCHEMA_REGISTRY_URL = os.environ["SCHEMA_REGISTRY_URL"]
-KAFKA_TOPIC_NAME = os.environ["KAFKA_TOPIC"]
-AVRO_SCHEMA_FILE = os.getenv("AVRO_SCHEMA_FILE")
-value_schema_str = read_file(AVRO_SCHEMA_FILE)
+value_schema_str = read_file(
+    path.join(Config.WORKSPACE_DIR, Config.AVRO_SCHEMA_FILE)
+)
 
 schema_registry_client = SchemaRegistryClient(
     conf={
-        "url": f"http://{SCHEMA_REGISTRY_URL}",
+        "url": f"http://{Config.SCHEMA_REGISTRY_URL}",
     }
 )
 
@@ -36,7 +28,7 @@ avro_serializer = AvroSerializer(
 )
 
 producer_conf = {
-    "bootstrap.servers": KAFKA_URL,
+    "bootstrap.servers": Config.KAFKA_URL,
     "key.serializer": StringSerializer("utf_8"),
     "value.serializer": avro_serializer,
 }
@@ -70,7 +62,10 @@ while description != "stop":
         }
     ]
     producer.produce(
-        KAFKA_TOPIC_NAME, value=data, key=key, on_delivery=delivery_report
+        Config.KAFKA_TOPIC_NAME,
+        value=data,
+        key=key,
+        on_delivery=delivery_report,
     )
     producer.flush()
     print(f"Sending data: {data}")

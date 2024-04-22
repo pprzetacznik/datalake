@@ -29,6 +29,11 @@
                             {
                                 "name": "price",
                                 "type": "double"
+                            },
+                            {
+                                "name": "uuid",
+                                "type": ["null","int"],
+                                "default": 1123
                             }
                         ],
                         "name": "Product",

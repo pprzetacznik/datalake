@@ -60,11 +60,10 @@ services:
       - schema-registry
     environment:
       KAFKA_URL: "broker:29092"
-      KAFKA_TOPIC: "dev.orders"
       SCHEMA_REGISTRY_URL: "schema-registry:8081"
-      INGESTION_DATA_PATH: "/ingestion_data"
-      AVRO_SCHEMA_FILE: "/ingestion/orders.avsc"
       KAFKA_BOOTSTRAP_SERVERS: "broker:29092"
+      INGESTION_DATA_PATH: "/ingestion_data"
+      WORKSPACE_DIR: "/ingestion"
     tty: true
     volumes:
       - .:/ingestion

@@ -120,6 +120,12 @@ Get latest schema for subject `dev.orders-value`.
 $ curl http://localhost:8081/subjects/dev.orders-value/versions/latest
 ```
 
+### Testing
+
+$ docker-compose up -d
+$ docker exec -it ingestion /bin/bash
+(docker) $ python /ingestion/ingestion.py
+
 ## References
 
 * [Structured Streaming Programming Guide](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html),

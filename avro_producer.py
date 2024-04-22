@@ -1,27 +1,20 @@
-import os
-import sys
-import logging
+from os import path
 from io import BytesIO
+
 from kafka import KafkaProducer
 from avro.io import DatumWriter, BinaryEncoder
 from avro.schema import parse
 
-if os.getenv("VERBOSE", False) in ("True", True):
-    logger = logging.getLogger("kafka")
-    logger.addHandler(logging.StreamHandler(sys.stdout))
-    logger.setLevel(logging.DEBUG)
+from config import Config
+from utils import setup_logger, read_file
 
 
-def read_file(filename):
-    with open(filename) as f:
-        return f.read()
+setup_logger()
 
 
-KAFKA_URL = os.environ["KAFKA_URL"]
-SCHEMA_REGISTRY_URL = os.environ["SCHEMA_REGISTRY_URL"]
-KAFKA_TOPIC_NAME = os.environ["KAFKA_TOPIC"]
-AVRO_SCHEMA_FILE = os.getenv("AVRO_SCHEMA_FILE")
-value_schema_str = read_file(AVRO_SCHEMA_FILE)
+value_schema_str = read_file(
+    path.join(Config.WORKSPACE_DIR, Config.AVRO_SCHEMA_FILE)
+)
 schema = parse(value_schema_str)
 
 
@@ -34,7 +27,7 @@ def serialize_message(message: str) -> bytes:
 
 
 producer = KafkaProducer(
-    bootstrap_servers=KAFKA_URL,
+    bootstrap_servers=Config.KAFKA_URL,
     value_serializer=serialize_message,
     ssl_check_hostname=True,
 )
@@ -58,7 +51,7 @@ while description != "stop":
             ],
         }
     ]
-    producer.send(KAFKA_TOPIC_NAME, key=key.encode("utf-8"), value=data)
+    producer.send(Config.KAFKA_TOPIC_NAME, key=key.encode("utf-8"), value=data)
     producer.flush()
     print(f"Sending data: {data}")
     index += 1
