@@ -1,4 +1,3 @@
-from os import path
 from io import BytesIO
 
 from kafka import KafkaProducer
@@ -6,54 +5,41 @@ from avro.io import DatumWriter, BinaryEncoder
 from avro.schema import parse
 
 from config import Config
-from utils import setup_logger, read_file
-
+from utils import setup_logger, read_file, produce_message_loop
 
 setup_logger()
 
 
-value_schema_str = read_file(
-    path.join(Config.WORKSPACE_DIR, Config.AVRO_SCHEMA_FILE)
-)
-schema = parse(value_schema_str)
+class AvroProducer:
+    def __init__(self, config: Config):
+        self.config = config
+        value_schema_str = read_file(config.AVRO_SCHEMA_PATH)
+        self.schema = parse(value_schema_str)
+        self.producer = KafkaProducer(
+            bootstrap_servers=config.KAFKA_URL,
+            value_serializer=self._serialize_message,
+            ssl_check_hostname=True,
+        )
+
+    def produce(self, key: str, value: dict):
+        self.producer.send(
+            self.config.KAFKA_TOPIC_NAME, key=key.encode("utf-8"), value=value
+        )
+        self.producer.flush()
+
+    def _serialize_message(self, message: str) -> bytes:
+        writer = DatumWriter(self.schema)
+        bytes_writer = BytesIO()
+        encoder = BinaryEncoder(bytes_writer)
+        writer.write(message, encoder)
+        return bytes_writer.getvalue()
 
 
-def serialize_message(message: str) -> bytes:
-    writer = DatumWriter(schema)
-    bytes_writer = BytesIO()
-    encoder = BinaryEncoder(bytes_writer)
-    writer.write(message, encoder)
-    return bytes_writer.getvalue()
+def main():
+    config = Config()
+    producer = AvroProducer(config)
+    produce_message_loop(producer)
 
 
-producer = KafkaProducer(
-    bootstrap_servers=Config.KAFKA_URL,
-    value_serializer=serialize_message,
-    ssl_check_hostname=True,
-)
-
-
-print("Please insert a description --> 'stop' to exit")
-description = input()
-index = 0
-
-while description != "stop":
-    key = f"product{index}"
-    data = [
-        {
-            "order_id": index,
-            "customer": "John Doe",
-            "description": f"{description}",
-            "price": 99.98,
-            "products": [
-                {"name": "shoes", "price": 49.99},
-                {"name": "t-shirt", "price": 49.99},
-            ],
-        }
-    ]
-    producer.send(Config.KAFKA_TOPIC_NAME, key=key.encode("utf-8"), value=data)
-    producer.flush()
-    print(f"Sending data: {data}")
-    index += 1
-    print("Insert new data (stop to exit)")
-    description = input()
+if __name__ == "__main__":
+    main()

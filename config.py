@@ -18,5 +18,6 @@ class Config:
 
     WORKSPACE_DIR = os.getenv("WORKSPACE_DIR", ".")
     AVRO_SCHEMA_FILE = os.getenv("AVRO_SCHEMA_FILE", "orders.avsc")
+    AVRO_SCHEMA_PATH = os.path.join(WORKSPACE_DIR, AVRO_SCHEMA_FILE)
 
     WRITE_MODE = "append"
