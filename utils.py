@@ -51,3 +51,24 @@ def produce_message_loop(producer, index, description):
     ]
     producer.produce(key=key, value=data)
     return key, data
+
+
+def consume_loop(fun):
+    @wraps(fun)
+    def handle(*args, **kwargs):
+        while True:
+            try:
+                result = fun(*args, **kwargs)
+            except KeyboardInterrupt:
+                break
+            except Exception as e:
+                print(e)
+
+    return handle
+
+
+@consume_loop
+def consume_message_loop(consumer):
+    message = consumer.consume()
+    if message:
+        print(f"{message.value()}")

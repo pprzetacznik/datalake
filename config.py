@@ -21,3 +21,16 @@ class Config:
     AVRO_SCHEMA_PATH = os.path.join(WORKSPACE_DIR, AVRO_SCHEMA_FILE)
 
     WRITE_MODE = "append"
+
+    CUSTOMER_SCHEMA_PATH = os.getenv(
+        "CUSTOMER_SCHEMA_PATH",
+        os.path.join(WORKSPACE_DIR, "schema", "customer.avsc"),
+    )
+    PRODUCT_SCHEMA_PATH = os.getenv(
+        "PRODUCT_SCHEMA_PATH",
+        os.path.join(WORKSPACE_DIR, "schema", "product.avsc"),
+    )
+    ALL_TYPES_SCHEMA_PATH = os.getenv(
+        "ALL_TYPES_SCHEMA_PATH",
+        os.path.join(WORKSPACE_DIR, "schema", "all_types.avsc"),
+    )

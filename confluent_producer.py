@@ -10,9 +10,13 @@ setup_logger()
 
 
 class ConfluentProducer:
-    def __init__(self, config: Config):
+    def __init__(
+        self,
+        config: Config,
+        value_schema_str: str,
+        serializer_conf: dict = None,
+    ):
         self.config = config
-        value_schema_str = read_file(config.AVRO_SCHEMA_PATH)
         schema_registry_client = SchemaRegistryClient(
             conf={
                 "url": f"http://{config.SCHEMA_REGISTRY_URL}",
@@ -22,6 +26,7 @@ class ConfluentProducer:
             schema_str=value_schema_str,
             schema_registry_client=schema_registry_client,
             to_dict=None,
+            conf=serializer_conf,
         )
         producer_conf = {
             "bootstrap.servers": config.KAFKA_URL,
@@ -48,7 +53,9 @@ class ConfluentProducer:
 
 def main():
     config = Config()
-    producer = ConfluentProducer(config)
+    producer = ConfluentProducer(
+        config, value_schema_str=read_file(config.AVRO_SCHEMA_PATH)
+    )
     produce_message_loop(producer)
 
 

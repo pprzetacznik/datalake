@@ -1,5 +1,4 @@
 from io import BytesIO
-
 from kafka import KafkaProducer
 from avro.io import DatumWriter, BinaryEncoder
 from avro.schema import parse
@@ -11,9 +10,12 @@ setup_logger()
 
 
 class AvroProducer:
-    def __init__(self, config: Config):
+    def __init__(
+        self,
+        config: Config,
+        value_schema_str: str,
+    ):
         self.config = config
-        value_schema_str = read_file(config.AVRO_SCHEMA_PATH)
         self.schema = parse(value_schema_str)
         self.producer = KafkaProducer(
             bootstrap_servers=config.KAFKA_URL,
@@ -37,7 +39,9 @@ class AvroProducer:
 
 def main():
     config = Config()
-    producer = AvroProducer(config)
+    producer = AvroProducer(
+        config, value_schema_str=read_file(config.AVRO_SCHEMA_PATH)
+    )
     produce_message_loop(producer)
 
 
