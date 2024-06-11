@@ -54,6 +54,9 @@ services:
     build:
       context: ./
       dockerfile: ./ingestion/Dockerfile
+      tags:
+        - datalake-ingestion:${DOCKER_DATALAKE_CONTAINER_VERSION}
+        - datalake-ingestion:latest
     depends_on:
       - zookeeper
       - broker

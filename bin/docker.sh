@@ -2,6 +2,8 @@
 
 set -xeuo pipefail
 
+source ./bin/envs.sh
+
 MODE=${1:-up}
 
 case $MODE in

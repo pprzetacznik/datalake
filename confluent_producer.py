@@ -22,6 +22,7 @@ class ConfluentProducer:
                 "url": f"http://{config.SCHEMA_REGISTRY_URL}",
             }
         )
+        schema_registry_client.set_compatibility(level="BACKWARD")
         avro_serializer = AvroSerializer(
             schema_str=value_schema_str,
             schema_registry_client=schema_registry_client,
